@@ -19,7 +19,7 @@ const Banner = () => (
     >
       {[img1, img2, img3, img4, img5, img6].map((src, index) => (
         <div key={index} className="relative w-full">
-          <img src={src} alt={`Slide ${index + 1}`} className="object-cover w-full h-[400px] md:h-[500px] lg:h-[600px] xl:h-[650px]" />
+          <img src={src} alt={`Slide ${index + 1}`} className="object-cover w-full h-[400px] md:h-[500px] lg:h-[600px] xl:h-[800px]" />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
             <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
               Learn More
