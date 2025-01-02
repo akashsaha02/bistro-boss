@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const SectiontTitle = ({ heading, subHeading }) => {
     return (
-        <div className='text-center my-6 w-4/12 mx-auto'>
-            <p className="italic pb-2">--- {subHeading} ---</p>
-            <h2 className="text-3xl uppercase py-4 border-y-2">{heading}</h2>
+        <div className='text-center my-6 max-w-sm mx-auto'>
+            <p className="text-sm md:text-md italic pb-2 text-yolo capitalize">--- {subHeading} ---</p>
+            <h2 className="text-2xl md:text-3xl font-semibold uppercase py-4 border-y-2 cinzel text-dark-2">{heading}</h2>
         </div>
     )
 }

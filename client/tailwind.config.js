@@ -6,7 +6,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        yolo: '#D99904',
+        dark: {
+          1: '#151515',
+          2: '#1F2937',
+          3:'#737373'
+        },
+        offwhite: '#F3F3F3',
+      },
+    },
   },
-  plugins: [require('daisyui')],
+  plugins: [daisyui],
 }

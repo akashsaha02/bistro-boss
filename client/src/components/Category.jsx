@@ -20,7 +20,7 @@ const slides = [
 
 const Category = () => {
   return (
-    <div className="max-w-7xl mx-auto my-6 px-4">
+    <div className="max-w-7xl mx-auto px-4 my-20">
       <SectiontTitle
         heading='Popular Categories'
         subHeading='Explore our popular categories'
@@ -40,7 +40,7 @@ const Category = () => {
         {slides.map((slide, index) => (
           <SwiperSlide key={index} className="relative text-center">
             <img src={slide.image} alt={slide.title} className="w-full rounded" />
-            <h3 className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-xl md:text-2xl lg:text-4xl uppercase text-white bg-black/50 py-2 px-4 rounded">
+            <h3 className="absolute cinzel bottom-8 left-1/2 transform -translate-x-1/2 text-xl md:text-2xl lg:text-4xl uppercase text-white bg-black/50 backdrop:blur-lg py-2 px-6 rounded">
               {slide.title}
             </h3>
           </SwiperSlide>
