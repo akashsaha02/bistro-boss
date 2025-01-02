@@ -1,4 +1,4 @@
-import SectiontTitle from "./SectiontTitle"
+import SectiontTitle from "../ui/SectiontTitle"
 
 const ChefRecommendations = () => {
 

@@ -1,4 +1,4 @@
-import chefService from '../assets/home/chef-service.jpg';
+import chefService from '../../assets/home/chef-service.jpg';
 
 const ChefService = () => {
     return (

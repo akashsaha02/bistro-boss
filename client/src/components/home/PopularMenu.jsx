@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import SectiontTitle from './SectiontTitle';
+import SectiontTitle from '../ui/SectiontTitle';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import MenuItem from './ui/MenuItem';
+import MenuItem from '../ui/MenuItem';
+import HomeButton from '../ui/HomeButton';
 
 const PopularMenu = () => {
 
@@ -35,13 +36,7 @@ const PopularMenu = () => {
                     }
                 </div>
                 <div className="flex justify-center my-8">
-                    <Link
-                        to={'/menu'}
-                        type="button"
-                        className="capitalize border-b-2 border-b-yolo px-4 py-2 rounded font-medium transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-yolo hover:text-white focus:outline-none focus:ring-2 focus:ring-yolo"
-                    >
-                        View Full Menu
-                    </Link>
+                    <HomeButton to='menu' text='View Full Menu' />
                 </div>
 
             </div>

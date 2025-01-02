@@ -1,9 +1,10 @@
-import Banner from "../components/Banner"
-import Category from "../components/Category"
-import ChefRecommendations from "../components/ChefRecommendations"
-import ChefService from "../components/ChefService"
-import Featured from "../components/Featured"
-import PopularMenu from "../components/PopularMenu"
+import Banner from "../components/home/Banner"
+import Category from "../components/home/Category"
+import ChefRecommendations from "../components/home/ChefRecommendations"
+import ChefService from "../components/home/ChefService"
+import Featured from "../components/home/Featured"
+import PopularMenu from "../components/home/PopularMenu"
+import Testimoneal from "../components/home/Testimoneal"
 
 const Home = () => {
   return (
@@ -13,7 +14,8 @@ const Home = () => {
       <ChefService />
       <PopularMenu />
       <ChefRecommendations />
-      <Featured/>
+      <Featured />
+      <Testimoneal />
     </div>
   )
 }
