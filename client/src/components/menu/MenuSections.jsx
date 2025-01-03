@@ -16,7 +16,7 @@ const MenuSections = ({ category }) => {
                 }
             </div>
             <div className="flex justify-center my-8">
-                <HomeButton to='menu' text='order your favourite food' />
+                <HomeButton to={`order/${category}`} text='order your favourite food' />
             </div>
 
         </div>
