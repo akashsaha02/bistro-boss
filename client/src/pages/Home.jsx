@@ -1,4 +1,5 @@
 import Banner from "../components/home/Banner"
+import CallUs from "../components/home/CallUs"
 import Category from "../components/home/Category"
 import ChefRecommendations from "../components/home/ChefRecommendations"
 import ChefService from "../components/home/ChefService"
@@ -13,6 +14,7 @@ const Home = () => {
       <Category />
       <ChefService />
       <PopularMenu />
+      <CallUs/>
       <ChefRecommendations />
       <Featured />
       <Testimoneal />

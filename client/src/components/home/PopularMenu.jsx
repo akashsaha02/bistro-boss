@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import SectiontTitle from '../ui/SectiontTitle';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import MenuItem from '../ui/MenuItem';
 import HomeButton from '../ui/HomeButton';
 
