@@ -19,7 +19,7 @@ const Menu = () => {
         subTitle="Would you like to try a dish ?"
       />
       <SectiontTitle heading="Todays Offer" subHeading="don't miss" />
-      <MenuSections category="popular"/>
+      <MenuSections category="offered"/>
       <MenuCover img={desertImg} title="Desserts" subTitle="Indulge in a sweet treat" />
       <MenuSections category="dessert"/>
       <MenuCover img={pizzaImg} title="Pizzas" subTitle="Indulge in a sweet treat" />

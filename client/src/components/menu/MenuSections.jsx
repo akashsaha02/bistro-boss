@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios';
 import MenuItem from '../ui/MenuItem';
 import HomeButton from '../ui/HomeButton';
 import useMenu from '../../hooks/useMenu';
