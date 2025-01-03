@@ -5,6 +5,7 @@ import useMenu from './../hooks/useMenu';
 import * as Tabs from '@radix-ui/react-tabs';
 import FoodCard from './../components/ui/FoodCard';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const Order = () => {
   const [menu] = useMenu();
@@ -26,6 +27,9 @@ const Order = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Bistro Boss | Order Food</title>
+      </Helmet>
       <Cover img={shopImg} title="Our Shop" subTitle="Order your favourite food" />
       <div>
         <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="w-full max-w-7xl mx-auto px-4">
