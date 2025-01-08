@@ -15,6 +15,7 @@ export default {
           3:'#737373'
         },
         offwhite: '#F3F3F3',
+        beige:'#D1A054'
       },
     },
   },
