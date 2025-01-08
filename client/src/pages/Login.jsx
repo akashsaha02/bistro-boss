@@ -54,19 +54,20 @@ const Login = () => {
               />
             </div>
 
-            <input
-              type="text"
-              id="id"
-              name="name"
-              placeholder="placeholder"
-              className="w-[300px] border border-slate-200 rounded-lg py-3 px-5 outline-none	bg-transparent"
-            /><input
-              type="text"
-              id="id"
-              name="name"
-              placeholder="placeholder"
-              className="w-[300px] border border-slate-200 rounded-lg py-3 px-5 outline-none	bg-transparent"
-            />
+            {/* Captcha */}
+            <div className="flex flex-col w-full gap-2">
+              <label htmlFor="captcha" className="text-dark-2">Captcha</label>
+              <input
+                type="text"
+                id="captcha"
+                name="captha"
+                placeholder="Enter your password"
+                className="w-full border border-slate-200 rounded-lg py-3 px-5 outline-none	bg-transparent"
+                autoComplete='on'
+              />
+            </div>
+
+
             <button type="submit" className="block text-center py-3 px-4 text-white font-semibold bg-beige w-full rounded-lg">Login now</button>
 
           </form>
