@@ -1,11 +1,10 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
-
+import { use } from "react";
 
 const NavBar = () => {
   const { user } = useContext(AuthContext);
-
 
   const navItems = (
     <>
@@ -13,7 +12,9 @@ const NavBar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+            isActive
+              ? "text-yolo font-bold !text-yolo"
+              : "text-white hover:!text-yolo font-medium"
           }
         >
           Home
@@ -23,7 +24,9 @@ const NavBar = () => {
         <NavLink
           to="/contact"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+            isActive
+              ? "text-yolo font-bold !text-yolo"
+              : "text-white hover:!text-yolo font-medium"
           }
         >
           Contact Us
@@ -34,7 +37,9 @@ const NavBar = () => {
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+              isActive
+                ? "text-yolo font-bold !text-yolo"
+                : "text-white hover:!text-yolo font-medium"
             }
           >
             Dashboard
@@ -45,7 +50,9 @@ const NavBar = () => {
         <NavLink
           to="/menu"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+            isActive
+              ? "text-yolo font-bold !text-yolo"
+              : "text-white hover:!text-yolo font-medium"
           }
         >
           Our Menu
@@ -55,7 +62,9 @@ const NavBar = () => {
         <NavLink
           to="/order"
           className={({ isActive }) =>
-            isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+            isActive
+              ? "text-yolo font-bold !text-yolo"
+              : "text-white hover:!text-yolo font-medium"
           }
         >
           Our Shop
@@ -65,7 +74,7 @@ const NavBar = () => {
   );
 
   return (
-    <div className="bg-gray-900/60 fixed w-full z-50 text-white">
+    <div className="bg-dark-1 sticky top-0 w-full z-50 text-white md:py-2">
       <div className="navbar mx-auto max-w-[1920px]">
         {/* Logo Section */}
         <div className="navbar-start">
@@ -73,33 +82,43 @@ const NavBar = () => {
         </div>
 
         {/* Navigation Menu */}
-        <div className="navbar-end hidden lg:flex">
-          <ul className="menu menu-horizontal px-4 space-x-4">{navItems}</ul>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="flex space-x-6">{navItems}</ul>
         </div>
 
-
-
         {/* Login and Sign Up Buttons */}
-          {user ? (
-            <div className="navbar-end space-x-2">
-              {user.email}
-            </div>
-          ) : (
-            <div className="navbar-end space-x-2">
-              <NavLink
-                to="/login"
-                className=" px-4 py-2 border rounded-lg  text-white hover:bg-yolo hover:border-yolo"
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/register"
-                className=" bg-yellow-400 text-gray-900 hover:bg-yolo hover:text-white border border-yellow-400 hover:border-yolo rounded-lg px-4 py-2"
-              >
-                Sign Up
-              </NavLink>
-            </div>
-          )}
+        {user ? (
+          <div className="navbar-end space-x-2">
+            <p className="">{user.email}</p>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive
+                  ? " font-bold px-4 py-2 border rounded-lg bg-yellow-400 text-black border-yellow-400"
+                  : " hover:!text-yolo text-yellow-400 font-medium px-4 py-2 border border-yellow-400 rounded-lg"
+              }
+            >
+              Profile
+            </NavLink>
+            {user.photoURL ? (<img src={user.photoURL} alt="user" className="w-10 h-10 rounded-full" />) : null}
+          </div>
+        ) : (
+          <div className="navbar-end space-x-2">
+            <NavLink
+              to="/login"
+              className="px-4 py-2 border rounded-lg text-white hover:bg-yolo hover:border-yolo"
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/register"
+              className="bg-yellow-400 text-gray-900 hover:bg-yolo hover:text-white border border-yellow-400 hover:border-yolo rounded-lg px-4 py-2"
+            >
+              Sign Up
+            </NavLink>
+          </div>
+        )}
+
         {/* Mobile Dropdown */}
         <div className="navbar-center lg:hidden">
           <div className="dropdown">

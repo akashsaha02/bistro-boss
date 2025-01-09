@@ -7,10 +7,12 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import { useEffect, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { AuthContext } from '../providers/AuthProvider';
+import Swal from 'sweetalert2';
+
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loginUser, googleSignIn,logoutUser } = useContext(AuthContext);
+  const { loginUser, googleSignIn, logoutUser } = useContext(AuthContext);
 
   const [captchaInput, setCaptchaInput] = useState('');
   const [captchaError, setCaptchaError] = useState('');
@@ -39,6 +41,11 @@ const Login = () => {
 
     if (!validateCaptcha(captchaInput)) {
       setCaptchaError('Invalid captcha');
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Invalid captcha. Please try again!',
+      });
       return;
     }
 
@@ -46,10 +53,20 @@ const Login = () => {
     setError('');
     try {
       await loginUser(email, password);
-      alert('Logged in successfully!');
-      navigate('/');
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Logged in successfully!',
+      }).then(() => {
+        navigate('/');
+      });
     } catch (err) {
       setError(err.message || 'Error logging in.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.message || 'Error logging in. Please try again.',
+      });
     } finally {
       setLoading(false);
     }
@@ -60,14 +77,44 @@ const Login = () => {
     setError('');
     try {
       await googleSignIn();
-      alert('Logged in successfully with Google!');
-      navigate('/');
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Logged in successfully with Google!',
+      }).then(() => {
+        navigate('/');
+      });
     } catch (err) {
       setError(err.message || 'Error logging in with Google.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.message || 'Error logging in with Google. Please try again.',
+      });
     } finally {
       setLoading(false);
     }
   };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      Swal.fire({
+        icon: 'success',
+        title: 'Logged Out',
+        text: 'You have been logged out successfully.',
+      }).then(() => {
+        navigate('/');
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to log out. Please try again.',
+      });
+    }
+  };
+
 
   const handleNewAccountClick = () => navigate('/register');
 
@@ -144,9 +191,8 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={disable || loading}
-                className={`block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 ${
-                  disable || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-beige'
-                }`}
+                className={`block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 ${disable || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-beige'
+                  }`}
               >
                 {loading ? 'Loading...' : 'Login now'}
               </button>
@@ -188,7 +234,7 @@ const Login = () => {
               >
                 Forgot Password?
               </button>
-              <button onClick={()=>{logoutUser()}} type="" className="">logout</button>
+              <button onClick={() => handleLogout()} type="" className="">logout</button>
             </div>
           </div>
         </div>

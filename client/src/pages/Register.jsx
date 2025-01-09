@@ -4,69 +4,63 @@ import githubIcon from '../assets/icon/icons8-github.svg';
 import googleIcon from '../assets/icon/icons8-google.svg';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { signOut, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { signOut, updateProfile } from 'firebase/auth';
+import Swal from 'sweetalert2';
 import { AuthContext } from '../providers/AuthProvider';
 import auth from '../firebase/firebase.init';
 
 const Register = () => {
-  const { createUser }=useContext(AuthContext);
+  const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const name=e.target.name.value;
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const photoUrl = e.target.photo.value;
-    console.log(name,email,password,photoUrl);
-   
-    // setVerificationMessage('');
 
-    // Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter.
+    // Password must be at least 6 characters long and include at least one uppercase letter and one lowercase letter.
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
 
-    // Validate password
     if (!passwordRegex.test(password)) {
-      alert('Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Password',
+        text: 'Password must be at least 6 characters long and include at least one uppercase and one lowercase letter.',
+      });
       return;
     }
 
-    // Create user using Auth Provider
-    createUser(email, password)
-      .then(userCredential => {
+    try {
+      const userCredential = await createUser(email, password);
+      const user = userCredential.user;
 
-        // const user = userCredential.user;
-        // send email verification address
-        // sendEmailVerification(auth.currentUser)
-        //     .then(() => {
-        //         setVerificationMessage("Verification email sent");
-        //     });
-        // update user profile
-        updateProfile(auth.currentUser, {
-          displayName: name,
-          photoURL: photoUrl
-        }
-        ).catch(error => {
-          alert('Error updating user profile:', error.code, error.message);
-        }
-        );
-        // Explicitly log the user out after registration
-        signOut(auth)
-          .catch(error => {
-            console.error('Error logging out:', error.code, error.message);
-          });
-
-        
-        alert('User registered successfully!');
-        e.target.name.value = '';
-        e.target.email.value = '';
-        e.target.password.value = '';
-        e.target.photo.value = '';
-        navigate("/");
-      }).catch(error => {
-        const errorMessage = error.message;
-        console.error('Error registering user:', errorMessage);
-        alert('Error registering user!');
+      // Update user profile
+      await updateProfile(user, {
+        displayName: name,
+        photoURL: photoUrl,
       });
+
+      // Log the user out after successful registration
+      await signOut(auth);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful',
+        text: 'Your account has been created successfully! Please log in.',
+      });
+
+      e.target.reset(); // Reset form fields
+      navigate('/');
+    } catch (error) {
+      console.error('Error registering user:', error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Failed',
+        text: error.message || 'An error occurred while registering your account.',
+      });
+    }
   };
 
   return (
@@ -81,7 +75,7 @@ const Register = () => {
         <div className="p-8">
           <h2 className="text-3xl font-bold text-center my-4">Register</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Email */}
+            {/* Name */}
             <div className="flex flex-col w-full gap-2">
               <label htmlFor="name" className="text-dark-2">Name</label>
               <input
@@ -94,7 +88,8 @@ const Register = () => {
                 required
               />
             </div>
-            {/* Email */}
+
+            {/* Photo URL */}
             <div className="flex flex-col w-full gap-2">
               <label htmlFor="photo" className="text-dark-2">Photo</label>
               <input
@@ -107,6 +102,7 @@ const Register = () => {
                 required
               />
             </div>
+
             {/* Email */}
             <div className="flex flex-col w-full gap-2">
               <label htmlFor="email" className="text-dark-2">Email</label>
@@ -135,14 +131,11 @@ const Register = () => {
               />
             </div>
 
-
-
-
             {/* Submit Button */}
             <div>
               <button
                 type="submit"
-                className='block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 bg-beige'
+                className="block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 bg-beige"
               >
                 Register
               </button>
@@ -158,6 +151,7 @@ const Register = () => {
               Login Now
             </span>
           </p>
+
           <div className="flex items-center flex-col justify-center gap-4">
             <p>Or sign up with</p>
             <div className="flex gap-4">
@@ -173,9 +167,9 @@ const Register = () => {
             </div>
           </div>
         </div>
-      </div >
-    </div >
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Register
+export default Register;
