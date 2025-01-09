@@ -73,11 +73,12 @@ import TabsComponent from '../components/order/TabsComponent';
 import MenuList from '../components/order/MenuList';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Loader from '../components/ui/Loader';
 
 const ITEMS_PER_PAGE = 6;
 
 const Order = () => {
-  const [menu] = useMenu();
+  const [menu,loading] = useMenu();
   const { category: routeCategory } = useParams();
   const [activeTab, setActiveTab] = useState('tab1');
   const [currentPage, setCurrentPage] = useState(0);
@@ -104,6 +105,8 @@ const Order = () => {
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+
+  if(loading)return <Loader/>
 
   return (
     <div>

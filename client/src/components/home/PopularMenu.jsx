@@ -2,11 +2,13 @@ import SectiontTitle from '../ui/SectiontTitle';
 import MenuItem from '../ui/MenuItem';
 import HomeButton from '../ui/HomeButton';
 import useMenu from '../../hooks/useMenu';
+import Loader from '../ui/Loader';
 
 const PopularMenu = () => {
 
 
-    const [menu]=useMenu()
+    const [menu,loding]=useMenu()
+    if (loding) return <Loader/>
     const popularMenu = menu.filter(item => item.category === 'popular').slice(0, 4);
 
     return (

@@ -1,10 +1,12 @@
 import MenuItem from '../ui/MenuItem';
 import HomeButton from '../ui/HomeButton';
 import useMenu from '../../hooks/useMenu';
+import Loader from '../ui/Loader';
 
 const MenuSections = ({ category }) => {
 
-    const [menu] = useMenu()
+    const [menu, loading] = useMenu()
+    if (loading) return <Loader />
     const filteredMenu = menu.filter(item => item.category === category).slice(0, 6);
     return (
         <div className="max-w-7xl mx-auto px-4 md:px-10 py-10">
