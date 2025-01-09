@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 
-const SectiontTitle = ({ heading, subHeading, color }) => {
+const SectionTitle = ({ heading, subHeading, color='text-black' }) => {
     return (
         <div className='text-center my-6 max-w-sm mx-auto'>
             <p className="text-sm md:text-md italic pb-2 text-yolo capitalize">--- {subHeading} ---</p>
             <h2
-                className="text-2xl md:text-3xl font-semibold uppercase py-4 border-y-2 cinzel"
-                style={{ color }}
+                className={`${color} text-2xl md:text-3xl font-semibold uppercase py-4 border-y-2 cinzel`}
             >
                 {heading}
             </h2>
@@ -14,15 +13,11 @@ const SectiontTitle = ({ heading, subHeading, color }) => {
     );
 };
 
-SectiontTitle.propTypes = {
+SectionTitle.propTypes = {
     heading: PropTypes.string.isRequired,
     subHeading: PropTypes.string.isRequired,
     color: PropTypes.string, // Color prop for the heading
 };
 
-// Default props
-SectiontTitle.defaultProps = {
-    color: 'black', // Default color is black
-};
 
-export default SectiontTitle;
+export default SectionTitle;

@@ -4,7 +4,9 @@ import githubIcon from '../assets/icon/icons8-github.svg';
 import googleIcon from '../assets/icon/icons8-google.svg';
 import { useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
+import { Helmet } from 'react-helmet';
+import { AuthContext } from '../providers/AuthProvider';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,11 +14,14 @@ const Login = () => {
   const [captchaInput, setCaptchaInput] = useState('');
   const [captchaError, setCaptchaError] = useState('');
 
+  const {loginUser} = useContext(AuthContext);
+
+
   useEffect(() => {
     loadCaptchaEnginge(6); // Load captcha with 6 characters
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
@@ -25,9 +30,12 @@ const Login = () => {
       setCaptchaError('Invalid captcha');
       return;
     }
-
     setCaptchaError('');
     console.log(email, password);
+    loginUser(email, password)
+    .then(result=>{
+      const user=result.user;
+    })
     // Proceed with login logic
   };
 
@@ -118,9 +126,8 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={disable}
-                className={`block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 ${
-                  disable ? 'bg-gray-300 cursor-not-allowed' : 'bg-beige'
-                }`}
+                className={`block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 ${disable ? 'bg-gray-300 cursor-not-allowed' : 'bg-beige'
+                  }`}
               >
                 Login now
               </button>
