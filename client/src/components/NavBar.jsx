@@ -1,6 +1,12 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
+
 
 const NavBar = () => {
+  const { user } = useContext(AuthContext);
+
+
   const navItems = (
     <>
       <li>
@@ -23,16 +29,18 @@ const NavBar = () => {
           Contact Us
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) =>
-            isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
-          }
-        >
-          Dashboard
-        </NavLink>
-      </li>
+      {user && (
+        <li>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+            }
+          >
+            Dashboard
+          </NavLink>
+        </li>
+      )}
       <li>
         <NavLink
           to="/menu"
@@ -57,7 +65,7 @@ const NavBar = () => {
   );
 
   return (
-    <div className="bg-gray-900/30 fixed w-full z-50 text-white">
+    <div className="bg-gray-900/60 fixed w-full z-50 text-white">
       <div className="navbar mx-auto max-w-[1920px]">
         {/* Logo Section */}
         <div className="navbar-start">
@@ -69,6 +77,29 @@ const NavBar = () => {
           <ul className="menu menu-horizontal px-4 space-x-4">{navItems}</ul>
         </div>
 
+
+
+        {/* Login and Sign Up Buttons */}
+          {user ? (
+            <div className="navbar-end space-x-2">
+              {user.email}
+            </div>
+          ) : (
+            <div className="navbar-end space-x-2">
+              <NavLink
+                to="/login"
+                className=" px-4 py-2 border rounded-lg  text-white hover:bg-yolo hover:border-yolo"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/register"
+                className=" bg-yellow-400 text-gray-900 hover:bg-yolo hover:text-white border border-yellow-400 hover:border-yolo rounded-lg px-4 py-2"
+              >
+                Sign Up
+              </NavLink>
+            </div>
+          )}
         {/* Mobile Dropdown */}
         <div className="navbar-center lg:hidden">
           <div className="dropdown">
@@ -95,22 +126,6 @@ const NavBar = () => {
               {navItems}
             </ul>
           </div>
-        </div>
-
-        {/* Login and Sign Up Buttons */}
-        <div className="navbar-end space-x-2">
-          <NavLink
-            to="/login"
-            className="btn btn-outline text-white hover:bg-yellow-400"
-          >
-            Login
-          </NavLink>
-          <NavLink
-            to="/signup"
-            className="btn bg-yellow-400 text-gray-900 hover:bg-yellow-500"
-          >
-            Sign Up
-          </NavLink>
         </div>
       </div>
     </div>
