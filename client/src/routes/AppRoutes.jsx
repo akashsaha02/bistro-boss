@@ -4,6 +4,7 @@ import Main from "../Layout/Main";
 import Menu from "../pages/Menu";
 import Order from "../pages/Order";
 import Login from "../pages/Login";
+import Register from './../pages/Register';
 
 export const router = createBrowserRouter([
     {
@@ -36,7 +37,7 @@ export const router = createBrowserRouter([
     },
     {
         path:'/register',
-        element:<Login/>,
+        element:<Register/>,
         errorElement:<div>Not Found</div>
     }
 ]);

@@ -4,40 +4,23 @@ import githubIcon from '../assets/icon/icons8-github.svg';
 import googleIcon from '../assets/icon/icons8-google.svg';
 import { useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
-import { useEffect, useState, useRef, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { AuthContext } from '../providers/AuthProvider';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [disable, setDisable] = useState(true);
+  const { loginUser, googleSignIn,logoutUser } = useContext(AuthContext);
+
   const [captchaInput, setCaptchaInput] = useState('');
   const [captchaError, setCaptchaError] = useState('');
-
-  const {loginUser} = useContext(AuthContext);
-
+  const [disable, setDisable] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    loadCaptchaEnginge(6); // Load captcha with 6 characters
+    loadCaptchaEnginge(6); // Initialize captcha
   }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
-    if (!validateCaptcha(captchaInput)) {
-      setCaptchaError('Invalid captcha');
-      return;
-    }
-    setCaptchaError('');
-    console.log(email, password);
-    loginUser(email, password)
-    .then(result=>{
-      const user=result.user;
-    })
-    // Proceed with login logic
-  };
 
   const handleCaptchaValidation = () => {
     if (validateCaptcha(captchaInput)) {
@@ -49,9 +32,44 @@ const Login = () => {
     }
   };
 
-  const handleNewAccountClick = () => {
-    navigate('/register');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    if (!validateCaptcha(captchaInput)) {
+      setCaptchaError('Invalid captcha');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    try {
+      await loginUser(email, password);
+      alert('Logged in successfully!');
+      navigate('/');
+    } catch (err) {
+      setError(err.message || 'Error logging in.');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await googleSignIn();
+      alert('Logged in successfully with Google!');
+      navigate('/');
+    } catch (err) {
+      setError(err.message || 'Error logging in with Google.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNewAccountClick = () => navigate('/register');
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center justify-center bg-gray-100">
@@ -63,9 +81,12 @@ const Login = () => {
 
         {/* Form Section */}
         <div className="p-8">
+          <Helmet>
+            <title>Login</title>
+          </Helmet>
           <h2 className="text-3xl font-bold text-center my-4">Login</h2>
+          {error && <p className="text-red-500 text-center">{error}</p>}
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Email */}
             <div className="flex flex-col w-full gap-2">
               <label htmlFor="email" className="text-dark-2">Email</label>
               <input
@@ -79,7 +100,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Password */}
             <div className="flex flex-col w-full gap-2">
               <label htmlFor="password" className="text-dark-2">Password</label>
               <input
@@ -93,7 +113,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Captcha */}
             <div className="flex flex-col w-full gap-2">
               <label htmlFor="captcha" className="text-dark-2">
                 <LoadCanvasTemplate />
@@ -121,15 +140,15 @@ const Login = () => {
               {captchaError && <p className="text-red-500 text-sm">{captchaError}</p>}
             </div>
 
-            {/* Submit Button */}
             <div>
               <button
                 type="submit"
-                disabled={disable}
-                className={`block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 ${disable ? 'bg-gray-300 cursor-not-allowed' : 'bg-beige'
-                  }`}
+                disabled={disable || loading}
+                className={`block text-center py-3 px-4 text-white font-semibold w-full rounded-lg my-4 ${
+                  disable || loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-beige'
+                }`}
               >
-                Login now
+                {loading ? 'Loading...' : 'Login now'}
               </button>
             </div>
           </form>
@@ -143,10 +162,16 @@ const Login = () => {
               Create New Account
             </span>
           </p>
+
           <div className="flex items-center flex-col justify-center gap-4">
             <p>Or sign in with</p>
             <div className="flex gap-4">
-              <button type="button" className="p-4 border rounded-full">
+              <button
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                type="button"
+                className="p-4 border rounded-full"
+              >
                 <img src={googleIcon} alt="google" className="w-6" />
               </button>
               <button type="button" className="p-4 border rounded-full">
@@ -155,6 +180,15 @@ const Login = () => {
               <button type="button" className="p-4 border rounded-full">
                 <img src={githubIcon} alt="github" className="w-6" />
               </button>
+            </div>
+            <div className="">
+              <button
+                onClick={() => navigate('/forgot-password')}
+                className="text-beige font-semibold cursor-pointer"
+              >
+                Forgot Password?
+              </button>
+              <button onClick={()=>{logoutUser()}} type="" className="">logout</button>
             </div>
           </div>
         </div>
