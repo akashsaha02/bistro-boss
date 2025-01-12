@@ -1,5 +1,38 @@
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import Swal from 'sweetalert2';
+
+
 const FoodCard = ({ food }) => {
   const { name, recipe, image, category, price } = food;
+  const navigate =useNavigate();
+
+  const {user}=useAuth();
+
+  const handlaAddToCart = (food) => {
+    // console.log("Added to cart", food,user.email);
+
+    if(user&&user.email){
+      //send data
+    }
+    else{
+      Swal.fire({
+        icon: 'warning',
+        title: 'You re not logged in!',
+        text: 'Please login to order!',
+        showCancelButton: true,
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //redirect to login
+          navigate('/login')
+          ;
+        }
+      })
+
+    }
+  }
 
   return (
     <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
@@ -20,7 +53,9 @@ const FoodCard = ({ food }) => {
         <p className="text-dark-3 text-sm mt-2 line-clamp-2">{recipe}</p>
         <div className="flex justify-between items-center mt-4">
           <span className="text-xl font-bold text-yolo">${price.toFixed(2)}</span>
-          <button className="px-4 py-2 text-sm bg-yolo text-white rounded hover:bg-dark-1 transition ease-in font-semibold">
+          <button 
+            onClick={()=>handlaAddToCart(food)}
+          className="px-4 py-2 text-sm bg-yolo text-white rounded hover:bg-dark-1 transition ease-in font-semibold">
             Order Now
           </button>
         </div>
