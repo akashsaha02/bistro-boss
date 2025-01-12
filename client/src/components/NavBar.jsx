@@ -75,7 +75,7 @@ const NavBar = () => {
 
       <li className="">
         <NavLink
-          to="/cart"
+          to="/dashboard/cart"
           className={({ isActive }) =>
             `font-medium hover:!text-yolo ${isActive ? "text-yolo font-bold" : "text-white"
             }`

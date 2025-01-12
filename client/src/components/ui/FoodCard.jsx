@@ -1,8 +1,8 @@
-
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useCart from "../../hooks/useCart";
 
 const FoodCard = ({ food }) => {
   const { name, recipe, image, category, price, _id } = food;
@@ -10,8 +10,9 @@ const FoodCard = ({ food }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
+  const [,refetch]=useCart();
 
-  const handleAddToCart = (food) => {
+  const handleAddToCart = () => {
     if (user && user.email) {
       // Send data logic
       const cartItem = {
@@ -23,13 +24,13 @@ const FoodCard = ({ food }) => {
       }
 
       axiosSecure.post('/carts', cartItem).then((res) => {
-        console.log(res.data)
         Swal.fire({
           icon: 'success',
           title: 'Success',
           text: 'Item added to cart!',
           timer: 1000,
         });
+        refetch();
       }).catch((err) => {
         console.log(err)
         Swal.fire({
@@ -80,7 +81,7 @@ const FoodCard = ({ food }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="text-xl font-bold text-yolo">${price.toFixed(2)}</span>
           <button
-            onClick={() => handleAddToCart(food)}
+            onClick={() => handleAddToCart()}
             className="px-4 py-2 text-sm bg-yolo text-white rounded hover:bg-dark-1 transition ease-in font-semibold">
             Order Now
           </button>

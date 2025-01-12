@@ -6,8 +6,9 @@ import Order from "../pages/Order";
 import Login from "../pages/Login";
 import Register from './../pages/Register';
 import PrivateRoute from "./PrivateRoute";
-import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
+import Dashboard from './../Layout/Dashboard';
+import Cart from "../pages/dashboard/Cart";
 
 export const router = createBrowserRouter([
     {
@@ -32,12 +33,6 @@ export const router = createBrowserRouter([
                 element:<Order/>
             },
             {
-                path:"/dashboard",
-                element:<PrivateRoute>
-                    <Dashboard/>
-                </PrivateRoute>
-            },
-            {
                 path:"/profile",
                 element:<PrivateRoute>
                     <Profile/>
@@ -55,5 +50,18 @@ export const router = createBrowserRouter([
         path:'/register',
         element:<Register/>,
         errorElement:<div>Not Found</div>
+    },
+    {
+        path:'/dashboard',
+        element:<Dashboard/>,
+        errorElement:<div>Not Found</div>,
+        children:[
+            {
+                path:'/dashboard/cart',
+                element:<Cart/>
+                
+            }
+        ]
+
     }
 ]);
