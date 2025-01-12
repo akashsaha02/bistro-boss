@@ -1,38 +1,64 @@
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import Swal from 'sweetalert2';
 
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const FoodCard = ({ food }) => {
-  const { name, recipe, image, category, price } = food;
-  const navigate =useNavigate();
+  const { name, recipe, image, category, price, _id } = food;
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
-  const {user}=useAuth();
+  const handleAddToCart = (food) => {
+    if (user && user.email) {
+      // Send data logic
+      const cartItem = {
+        menuId: _id,
+        email: user.email,
+        name,
+        price,
+        image,
+      }
 
-  const handlaAddToCart = (food) => {
-    // console.log("Added to cart", food,user.email);
+      axiosSecure.post('/carts', cartItem).then((res) => {
+        console.log(res.data)
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Item added to cart!',
+          timer: 1000,
+        });
+      }).catch((err) => {
+        console.log(err)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong. Please try again!',
+        });
+      });
 
-    if(user&&user.email){
-      //send data
-    }
-    else{
+
+
+    } else {
       Swal.fire({
         icon: 'warning',
-        title: 'You re not logged in!',
+        title: 'You\'re not logged in!',
         text: 'Please login to order!',
         showCancelButton: true,
         confirmButtonText: 'Login',
         cancelButtonText: 'Cancel',
       }).then((result) => {
         if (result.isConfirmed) {
-          //redirect to login
-          navigate('/login')
-          ;
+          navigate('/login', { state: { from: location } });
         }
-      })
-
+      });
     }
-  }
+  };
+
+
+
 
   return (
     <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
@@ -53,9 +79,9 @@ const FoodCard = ({ food }) => {
         <p className="text-dark-3 text-sm mt-2 line-clamp-2">{recipe}</p>
         <div className="flex justify-between items-center mt-4">
           <span className="text-xl font-bold text-yolo">${price.toFixed(2)}</span>
-          <button 
-            onClick={()=>handlaAddToCart(food)}
-          className="px-4 py-2 text-sm bg-yolo text-white rounded hover:bg-dark-1 transition ease-in font-semibold">
+          <button
+            onClick={() => handleAddToCart(food)}
+            className="px-4 py-2 text-sm bg-yolo text-white rounded hover:bg-dark-1 transition ease-in font-semibold">
             Order Now
           </button>
         </div>

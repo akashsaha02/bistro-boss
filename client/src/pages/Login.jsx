@@ -2,17 +2,22 @@ import loginImg from '../assets/others/authentication1.png';
 import facebookIcon from '../assets/icon/icons8-facebook.svg';
 import githubIcon from '../assets/icon/icons8-github.svg';
 import googleIcon from '../assets/icon/icons8-google.svg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, } from 'react';
 import { Helmet } from 'react-helmet';
-import { AuthContext } from '../providers/AuthProvider';
 import Swal from 'sweetalert2';
+import useAuth from '../hooks/useAuth';
 
 
 const Login = () => {
   const navigate = useNavigate();
-  const { loginUser, googleSignIn, logoutUser } = useContext(AuthContext);
+  const { loginUser, googleSignIn, logoutUser } = useAuth();
+
+  const location =useLocation();
+
+  const from =location.state?.from?.pathname || '/';
+  console.log(from)
 
   const [captchaInput, setCaptchaInput] = useState('');
   const [captchaError, setCaptchaError] = useState('');
@@ -58,7 +63,7 @@ const Login = () => {
         title: 'Success',
         text: 'Logged in successfully!',
       }).then(() => {
-        navigate('/');
+        navigate(from);
       });
     } catch (err) {
       setError(err.message || 'Error logging in.');
@@ -82,7 +87,7 @@ const Login = () => {
         title: 'Success',
         text: 'Logged in successfully with Google!',
       }).then(() => {
-        navigate('/');
+        navigate(from);
       });
     } catch (err) {
       setError(err.message || 'Error logging in with Google.');

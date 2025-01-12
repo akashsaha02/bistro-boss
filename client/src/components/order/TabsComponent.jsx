@@ -11,7 +11,7 @@ const TabsComponent = ({ uniqueCategories, activeTab, setActiveTab }) => {
         {uniqueCategories.map((category, index) => (
           <Tabs.Trigger
             key={index}
-            value={`tab${index + 1}`}
+            value={category}
             className="px-4 py-2 text-gray-700 hover:text-yellow-500 focus:text-yellow-500 data-[state=active]:border-b-2 data-[state=active]:border-yellow-500 data-[state=active]:text-yellow-500 transition font-semibold capitalize"
           >
             {category}

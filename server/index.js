@@ -24,28 +24,36 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
 
-    const database=client.db("bistroDb");
-    const menuCollection=database.collection("menu");
-    const reviewsCollection=database.collection("reviews");
-    const cartsCollection=database.collection("carts");
+    const database = client.db("bistroDb");
+    const menuCollection = database.collection("menu");
+    const reviewsCollection = database.collection("reviews");
+    const cartsCollection = database.collection("carts");
 
+
+    // Menu Collection
     app.get('/menu', async (req, res) => {
-        const menu = await menuCollection.find().toArray();
-        res.send(menu);
+      const menu = await menuCollection.find().toArray();
+      res.send(menu);
     });
 
 
+    // Review Collection
     app.get('/reviews', async (req, res) => {
-        const reviews = await reviewsCollection.find().toArray();
-        res.send(reviews);
+      const reviews = await reviewsCollection.find().toArray();
+      res.send(reviews);
     });
 
 
-    
+    // Carts Collection
+    app.get('/carts', async (req, res) => {
+      const result = await cartsCollection.find().toArray();
+      res.send(result);
+    });
+
     app.post('/carts', async (req, res) => {
-        const cart = req.body;
-        const result = await cartsCollection.insertOne(cart);
-        res.json(result);
+      const cart = req.body;
+      const result = await cartsCollection.insertOne(cart);
+      res.json(result);
     });
 
 
@@ -58,12 +66,12 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('Bistro Boss Server!');
+  res.send('Bistro Boss Server!');
 });
 
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
 
 
