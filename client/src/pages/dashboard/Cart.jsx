@@ -1,14 +1,42 @@
+import { FaTrashAlt } from "react-icons/fa";
 import useCart from "../../hooks/useCart"
 import SectionTitle from './../../components/ui/SectiontTitle';
+import Swal from 'sweetalert2';
+import useAxiosSecure from './../../hooks/useAxiosSecure';
 
 const Cart = () => {
-
-    const [cart] = useCart();
-
+    const [cart, refetch] = useCart();
     const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+    const axiosSecure = useAxiosSecure();
 
+    const handleDeleteCart = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/carts/${id}`).then((res) => {
+                    if (res.data.deletedCount > 0) {
+                        refetch();
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your file has been deleted.",
+                            icon: "success"
+                        });
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        });
+    }
     return (
-        <div className="bg-gray-100 py-10 px-4">
+        <div className=" py-10 px-4">
 
             {/* <p className="text-center">
                     {cart.length}
@@ -25,12 +53,12 @@ const Cart = () => {
             </div>
 
 
-            <div className="">
+            <div className="my-10">
                 <div className="overflow-x-auto">
                     <table className="table">
                         {/* head */}
                         <thead>
-                            <tr>
+                            <tr className="text-lg">
                                 <th>
                                     Number
                                 </th>
@@ -52,24 +80,27 @@ const Cart = () => {
                                                 </label>
                                             </th>
                                             <td>
-                                                <div className="flex items-center gap-3">
-                                                    <div className="avatar">
-                                                        <div className="mask mask-squircle h-12 w-12">
-                                                            <img
-                                                                src={item.image}
-                                                                alt={item.name}
-                                                            />
-                                                        </div>
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle h-12 w-12">
+                                                        <img
+                                                            src={item.image}
+                                                            alt={item.name}
+                                                        />
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                {item.name} {item.brand}
-                                                <p >{item.category}</p>
+                                                <div className="">
+                                                    {item.name}
+                                                    {/* {item.category} */}
+                                                </div>
+
                                             </td>
                                             <td>{item.price} $</td>
                                             <th>
-                                                <button className="btn btn-ghost btn-xs">Delete</button>
+                                                <button
+                                                    onClick={() => handleDeleteCart(item._id)}
+                                                    className="btn btn-ghost btn-md"><FaTrashAlt /></button>
                                             </th>
                                         </tr>
                                     );
