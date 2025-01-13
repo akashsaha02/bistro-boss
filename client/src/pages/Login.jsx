@@ -8,6 +8,7 @@ import { useEffect, useState, } from 'react';
 import { Helmet } from 'react-helmet';
 import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
+import SocialSignIn from '../components/shared/SocialSignIn';
 
 
 const Login = () => {
@@ -71,30 +72,6 @@ const Login = () => {
         icon: 'error',
         title: 'Error',
         text: err.message || 'Error logging in. Please try again.',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      await googleSignIn();
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Logged in successfully with Google!',
-      }).then(() => {
-        navigate(from);
-      });
-    } catch (err) {
-      setError(err.message || 'Error logging in with Google.');
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.message || 'Error logging in with Google. Please try again.',
       });
     } finally {
       setLoading(false);
@@ -216,22 +193,7 @@ const Login = () => {
 
           <div className="flex items-center flex-col justify-center gap-4">
             <p>Or sign in with</p>
-            <div className="flex gap-4">
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                type="button"
-                className="p-4 border rounded-full"
-              >
-                <img src={googleIcon} alt="google" className="w-6" />
-              </button>
-              <button type="button" className="p-4 border rounded-full">
-                <img src={facebookIcon} alt="facebook" className="w-6" />
-              </button>
-              <button type="button" className="p-4 border rounded-full">
-                <img src={githubIcon} alt="github" className="w-6" />
-              </button>
-            </div>
+            <SocialSignIn/>
             <div className="">
               <button
                 onClick={() => navigate('/forgot-password')}

@@ -34,6 +34,14 @@ async function run() {
     // User Collection
     app.post('/users', async (req, res) => {
       const user = req.body;
+
+
+      const query = { email: user.email };
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        res.send({ message: 'User already exists', insertedId: existingUser._id }); 
+        return;
+      }
       const result = await userCollection.insertOne(user);
       res.json(result);
     });
@@ -60,8 +68,8 @@ async function run() {
 
     // Carts Collection
     app.get('/carts', async (req, res) => {
-      const email= req.query.email;
-      const query={email:email};
+      const email = req.query.email;
+      const query = { email: email };
       const result = await cartsCollection.find(query).toArray();
       res.send(result);
     });
@@ -74,7 +82,7 @@ async function run() {
 
     app.delete('/carts/:id', async (req, res) => {
       const id = req.params.id;
-      const query = { _id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await cartsCollection.deleteOne(query);
       res.json(result);
     });

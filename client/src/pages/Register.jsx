@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { AuthContext } from '../providers/AuthProvider';
 import auth from '../firebase/firebase.init';
 import useAxiosPublic from './../hooks/useAxiosPublic';
+import SocialSignIn from './../components/shared/SocialSignIn';
 
 const Register = () => {
   const axiosPublic = useAxiosPublic();
@@ -169,17 +170,7 @@ const Register = () => {
 
           <div className="flex items-center flex-col justify-center gap-4">
             <p>Or sign up with</p>
-            <div className="flex gap-4">
-              <button type="button" className="p-4 border rounded-full">
-                <img src={googleIcon} alt="google" className="w-6" />
-              </button>
-              <button type="button" className="p-4 border rounded-full">
-                <img src={facebookIcon} alt="facebook" className="w-6" />
-              </button>
-              <button type="button" className="p-4 border rounded-full">
-                <img src={githubIcon} alt="github" className="w-6" />
-              </button>
-            </div>
+            <SocialSignIn />
           </div>
         </div>
       </div>

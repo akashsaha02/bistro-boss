@@ -1,42 +1,55 @@
 import useAuth from '../../hooks/useAuth';
-import facebookIcon from '../assets/icon/icons8-facebook.svg';
-import githubIcon from '../assets/icon/icons8-github.svg';
-import googleIcon from '../assets/icon/icons8-google.svg';
-import { useNavigate } from 'react-router-dom';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import facebookIcon from '../../assets/icon/icons8-facebook.svg';
+import githubIcon from '../../assets/icon/icons8-github.svg';
+import googleIcon from '../../assets/icon/icons8-google.svg';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const SocialSignIn = () => {
 
     const { googleSignIn } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const handleGoogleSignIn = async () => {
-        setLoading(true);
-        setError('');
+    const from = location.state?.from?.pathname || '/';
+
+    const axiosPublic = useAxiosPublic();
+
+    const handleGoogleSignIn = () => {
+
         try {
-            await googleSignIn();
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Logged in successfully with Google!',
-            }).then(() => {
-                navigate(from);
-            });
+            googleSignIn().then((res) => {
+                const userInfo = {
+                    email: res.user?.email,
+                    name: res.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo).then((res) => {
+                    if (res.data.insertedId) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Logged in successfully with Google!',
+                        }).then(() => {
+                            navigate(from);
+                        });
+                    }
+                })
+            })
+
+
         } catch (err) {
-            setError(err.message || 'Error logging in with Google.');
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: err.message || 'Error logging in with Google. Please try again.',
             });
-        } finally {
-            setLoading(false);
         }
     };
     return (
         <div className="flex gap-4">
             <button
                 onClick={handleGoogleSignIn}
-                disabled={loading}
                 type="button"
                 className="p-4 border rounded-full"
             >
