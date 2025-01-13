@@ -8,8 +8,10 @@ import { signOut, updateProfile } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../providers/AuthProvider';
 import auth from '../firebase/firebase.init';
+import useAxiosPublic from './../hooks/useAxiosPublic';
 
 const Register = () => {
+  const axiosPublic = useAxiosPublic();
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ const Register = () => {
     const password = e.target.password.value;
     const photoUrl = e.target.photo.value;
 
-    // Password must be at least 6 characters long and include at least one uppercase letter and one lowercase letter.
+    // Password validation: must be at least 6 characters long and include at least one uppercase and one lowercase letter.
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z]).{6,}$/;
 
     if (!passwordRegex.test(password)) {
@@ -33,6 +35,7 @@ const Register = () => {
     }
 
     try {
+      // Create user
       const userCredential = await createUser(email, password);
       const user = userCredential.user;
 
@@ -42,17 +45,28 @@ const Register = () => {
         photoURL: photoUrl,
       });
 
-      // Log the user out after successful registration
-      await signOut(auth);
+      // Save user info to the database
+      const userInfo = {
+        name: name,
+        email: email,
+      };
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Registration Successful',
-        text: 'Your account has been created successfully! Please log in.',
-      });
+      const response = await axiosPublic.post('/users', userInfo);
 
-      e.target.reset(); // Reset form fields
-      navigate('/');
+      if (response.data.insertedId) {
+        // Log the user out after successful registration
+        await signOut(auth);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful',
+          text: 'Your account has been created successfully! Please log in.',
+        });
+
+        // Reset the form fields and navigate to the login page
+        e.target.reset();
+        navigate('/');
+      }
     } catch (error) {
       console.error('Error registering user:', error.message);
       Swal.fire({
@@ -62,6 +76,7 @@ const Register = () => {
       });
     }
   };
+
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-20 min-h-screen flex items-center justify-center bg-gray-100">

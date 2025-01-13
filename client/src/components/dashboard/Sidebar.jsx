@@ -16,7 +16,7 @@ const Sidebar = () => {
                 <div className="">
                     <img src={logo} alt="" className="w-10" />
                 </div>
-                <p className="text-2xl font-bold cinzel">Bistro Boss<br/>Restaurent</p>
+                <p className="text-2xl font-bold cinzel">Bistro Boss<br />Restaurent</p>
             </NavLink>
         </li>
 
@@ -26,11 +26,11 @@ const Sidebar = () => {
                 to="/dashboard"
                 className={({ isActive }) =>
                     isActive
-                        ? "text-yolo font-bold !text-yolo"
+                        ? "font-bold !text-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                     <HiHome className="inline-block" size={20} />
                     <p className="text-lg">User Home</p>
                 </div>
@@ -42,11 +42,11 @@ const Sidebar = () => {
                 to="/dashboard/reservation"
                 className={({ isActive }) =>
                     isActive
-                        ? "text-yolo font-bold !text-yolo"
+                        ? "font-bold !text-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                     <FaCalendarDay className="inline-block" size={20} />
                     <p className="text-lg">Reservation</p>
                 </div>
@@ -58,11 +58,11 @@ const Sidebar = () => {
                 to="/dashboard/payment-history"
                 className={({ isActive }) =>
                     isActive
-                        ? "text-yolo font-bold !text-yolo"
+                        ? "font-bold !text-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                     <MdPayments className="inline-block" size={20} />
                     <p className="text-lg">Payment History</p>
                 </div>
@@ -74,22 +74,15 @@ const Sidebar = () => {
                 to="/dashboard/cart"
                 className={({ isActive }) =>
                     isActive
-                        ? "text-yolo font-bold !text-yolo"
+                        ? "font-bold !text-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
-                <div className="flex gap-4">
-                    <div className="relative">
-                        <FaCartShopping className="inline-block" size={20} />
-                        <span
-                            className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
-                            aria-label="Cart items"
-                        >
-                            {cart.length}
-                        </span>
-                    </div>
+                <div className="flex gap-4 items-center">
+                    <FaCartShopping className="inline-block" size={20} />
+
                     <p className="text-lg">
-                        My Cart
+                        My Cart ({cart.length})
                     </p>
                 </div>
             </NavLink>
@@ -99,11 +92,11 @@ const Sidebar = () => {
                 to="/dashboard/add-review"
                 className={({ isActive }) =>
                     isActive
-                        ? "text-yolo font-bold !text-yolo"
+                        ? "font-bold !text-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                     <MdReviews className="inline-block" size={20} />
                     <p className="text-lg">Add Review</p>
                 </div>
@@ -115,11 +108,11 @@ const Sidebar = () => {
                 to="/dashboard/my-bookings"
                 className={({ isActive }) =>
                     isActive
-                        ? "text-yolo font-bold !text-yolo"
+                        ? "font-bold !text-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                     <FaCalendarCheck className="inline-block" size={20} />
                     <p className="text-lg">My Bookings</p>
                 </div>

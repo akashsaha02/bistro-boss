@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
-import useAuth from './../hooks/useAuth';
-import useCart from "../hooks/useCart";
+import useAuth from '../../hooks/useAuth';
+import useCart from "../../hooks/useCart";
 
 const NavBar = () => {
   const { user } = useAuth();
