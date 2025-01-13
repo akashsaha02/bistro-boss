@@ -7,7 +7,7 @@ const Dashboard = () => {
         <div className="">
             <Sidebar/>
         </div>
-        <div className="">
+        <div className="w-full">
             <Outlet/>
         </div>
       

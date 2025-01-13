@@ -1,14 +1,74 @@
 import { NavLink } from "react-router-dom"
 import useCart from "../../hooks/useCart"
 import { FaCartShopping } from "react-icons/fa6"
+import { FaCalendarCheck, FaCalendarDay } from "react-icons/fa";
 import { HiHome } from "react-icons/hi2";
+import { MdPayments, MdReviews } from "react-icons/md";
+import logo from '../../assets/logo.png'
+
 const Sidebar = () => {
 
     const [cart] = useCart();
 
     const sidebarItems = <>
+        <li>
+            <NavLink to='/' className="flex items-center gap-4 p-4">
+                <div className="">
+                    <img src={logo} alt="" className="w-10" />
+                </div>
+                <p className="text-2xl font-bold cinzel">Bistro Boss<br/>Restaurent</p>
+            </NavLink>
+        </li>
 
 
+        <li>
+            <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                    isActive
+                        ? "text-yolo font-bold !text-yolo"
+                        : "text-black hover:!text-yolo font-medium"
+                }
+            >
+                <div className="flex gap-4">
+                    <HiHome className="inline-block" size={20} />
+                    <p className="text-lg">User Home</p>
+                </div>
+
+            </NavLink>
+        </li>
+        <li>
+            <NavLink
+                to="/dashboard/reservation"
+                className={({ isActive }) =>
+                    isActive
+                        ? "text-yolo font-bold !text-yolo"
+                        : "text-black hover:!text-yolo font-medium"
+                }
+            >
+                <div className="flex gap-4">
+                    <FaCalendarDay className="inline-block" size={20} />
+                    <p className="text-lg">Reservation</p>
+                </div>
+
+            </NavLink>
+        </li>
+        <li>
+            <NavLink
+                to="/dashboard/payment-history"
+                className={({ isActive }) =>
+                    isActive
+                        ? "text-yolo font-bold !text-yolo"
+                        : "text-black hover:!text-yolo font-medium"
+                }
+            >
+                <div className="flex gap-4">
+                    <MdPayments className="inline-block" size={20} />
+                    <p className="text-lg">Payment History</p>
+                </div>
+
+            </NavLink>
+        </li>
         <li className="">
             <NavLink
                 to="/dashboard/cart"
@@ -29,14 +89,14 @@ const Sidebar = () => {
                         </span>
                     </div>
                     <p className="text-lg">
-                        Cart
+                        My Cart
                     </p>
                 </div>
             </NavLink>
         </li>
         <li>
             <NavLink
-                to="/"
+                to="/dashboard/add-review"
                 className={({ isActive }) =>
                     isActive
                         ? "text-yolo font-bold !text-yolo"
@@ -44,8 +104,24 @@ const Sidebar = () => {
                 }
             >
                 <div className="flex gap-4">
-                    <HiHome className="inline-block" size={20} />
-                    <p className="text-lg">Home</p>
+                    <MdReviews className="inline-block" size={20} />
+                    <p className="text-lg">Add Review</p>
+                </div>
+
+            </NavLink>
+        </li>
+        <li>
+            <NavLink
+                to="/dashboard/my-bookings"
+                className={({ isActive }) =>
+                    isActive
+                        ? "text-yolo font-bold !text-yolo"
+                        : "text-black hover:!text-yolo font-medium"
+                }
+            >
+                <div className="flex gap-4">
+                    <FaCalendarCheck className="inline-block" size={20} />
+                    <p className="text-lg">My Bookings</p>
                 </div>
 
             </NavLink>
