@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
@@ -31,13 +32,49 @@ async function run() {
     const cartsCollection = database.collection("carts");
 
 
+    // jwt api
+
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+      res.send({ token })
+    });
+
+    // middlewares
+    const verifyToken = (req, res, next) => {
+      console.log(req.headers)
+      if (!req.headers.authorization) {
+        return res.status(401).send({ message: 'Unauthorized request' });
+      }
+
+      const token = req.headers.authorization.split(' ')[1];
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+          return res.status(403).send({ message: 'Forbidden request' });
+        }
+        req.user = user;
+        next();
+      });
+
+      // next();
+
+    }
+
+
+
     // User Collection
+
+    app.get('/users', async (req, res) => {
+      console.log(req.headers)
+      const users = await userCollection.find().toArray();
+      res.send(users);
+    });
+
+
     app.post('/users', async (req, res) => {
       const user = req.body;
-
       const query = { email: user.email };
       const existingUser = await userCollection.findOne(query);
-
       if (existingUser) {
         res.send({ message: 'User already exists', insertedId: existingUser._id });
         return;
@@ -51,10 +88,7 @@ async function run() {
     });
 
 
-    app.get('/users', async (req, res) => {
-      const users = await userCollection.find().toArray();
-      res.send(users);
-    });
+
 
     // Update User Role
     app.patch('/users/role/:id', async (req, res) => {

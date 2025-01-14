@@ -2,13 +2,18 @@ import { useQuery } from '@tanstack/react-query';
 import SectionTitle from '../../components/ui/SectiontTitle';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import auth from './../../firebase/firebase.init';
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
     const { data: users = [], refetch } = useQuery({
         queryKey: 'users',
         queryFn: async () => {
-            const response = await axiosSecure.get('/users');
+            const response = await axiosSecure.get('/users',{
+                headers:{
+                    authorization: `Bearer ${localStorage.getItem('access-token')}`,
+                }
+            });
             return response.data;
         },
     });
