@@ -1,7 +1,4 @@
 import loginImg from '../assets/others/authentication1.png';
-import facebookIcon from '../assets/icon/icons8-facebook.svg';
-import githubIcon from '../assets/icon/icons8-github.svg';
-import googleIcon from '../assets/icon/icons8-google.svg';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { signOut, updateProfile } from 'firebase/auth';

@@ -1,7 +1,5 @@
 import loginImg from '../assets/others/authentication1.png';
-import facebookIcon from '../assets/icon/icons8-facebook.svg';
-import githubIcon from '../assets/icon/icons8-github.svg';
-import googleIcon from '../assets/icon/icons8-google.svg';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { useEffect, useState, } from 'react';
