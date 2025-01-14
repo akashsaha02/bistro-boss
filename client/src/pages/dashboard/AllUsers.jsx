@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import SectionTitle from '../../components/ui/SectiontTitle';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -12,29 +13,74 @@ const AllUsers = () => {
         },
     });
 
-    const handleRoleChange = async (id, newRole) => {
-        try {
-            // await axiosSecure.patch(`/users/${id}`, { role: newRole });
-            // refetch(); 
-            alert('User role updated successfully!');
-        } catch (error) {
-            // console.error('Error updating role:', error.message);
-            alert('Failed to update user role.');
-        }
+    const handleRoleChange = (id, newRole) => {
+        Swal.fire({
+            title: `Are you sure?`,
+            text: `The user will be assigned the role of ${newRole}.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, Make ${newRole}!`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure
+                    .patch(`/users/role/${id}`, { role: newRole })
+                    .then((res) => {
+                        if (res.data.modifiedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: 'Role Updated!',
+                                text: `User role has been updated to ${newRole}.`,
+                                icon: 'success',
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.error('Error updating role:', err);
+                        Swal.fire({
+                            title: 'Failed!',
+                            text: 'Failed to update user role.',
+                            icon: 'error',
+                        });
+                    });
+            }
+        });
     };
 
-    const handleDeleteUser = async (id) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this user?');
-        if (confirmDelete) {
-            try {
-                // await axiosSecure.delete(`/users/${id}`);
-                // refetch(); // Refresh data after deleting
-                alert('User deleted successfully!');
-            } catch (error) {
-                // console.error('Error deleting user:', error.message);
-                alert('Failed to delete user.');
+    const handleDeleteUser = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure
+                    .delete(`/users/${id}`)
+                    .then((res) => {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'User has been deleted.',
+                                icon: 'success',
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.error('Error deleting user:', err);
+                        Swal.fire({
+                            title: 'Failed!',
+                            text: 'Failed to delete user.',
+                            icon: 'error',
+                        });
+                    });
             }
-        }
+        });
     };
 
     return (
@@ -43,14 +89,14 @@ const AllUsers = () => {
 
             <div className="max-w-5xl mx-auto">
                 <div className="">
-                    <h2 className="">Total Users ({users.length})</h2>
+                    <h2>Total Users ({users.length})</h2>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="table">
+                <div className="overflow-x-auto rounded-xl">
+                    <table className="table table-zebra">
                         {/* Table Head */}
-                        <thead>
-                            <tr className='text-center'>
+                        <thead className="text-center bg-yolo/80 text-white">
+                            <tr>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -58,38 +104,37 @@ const AllUsers = () => {
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody className='text-center'>
-                            {/* Map through users */}
+                        <tbody className="text-center">
                             {users.map((user, index) => (
                                 <tr key={user._id}>
                                     <th>{index + 1}</th>
-                                    <td>
-                                        <p className="px-4 block">
-                                            {user.name}
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <p className="px-4">
-                                            {user.email}
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <p className="px-4">
-                                            {user.role||'User'}
-                                        </p>
-                                    </td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.role || 'Normal User'}</td>
                                     <td>
                                         <div className="w-full flex justify-center items-center px-4">
-                                            {/* Role Button */}
+                                            {/* Role Buttons */}
                                             <button
                                                 className="btn btn-sm btn-primary mx-1"
-                                                onClick={() => handleRoleChange(user._id, user.role === 'Admin' ? 'User' : 'Admin')}
+                                                onClick={() => handleRoleChange(user._id, 'admin')}
                                             >
-                                                {user.role === 'Admin' ? 'Demote to User' : 'Promote to Admin'}
+                                                Make Admin
+                                            </button>
+                                            <button
+                                                className="btn btn-sm btn-secondary mx-1"
+                                                onClick={() => handleRoleChange(user._id, 'premium')}
+                                            >
+                                                Make Premium
+                                            </button>
+                                            <button
+                                                className="btn btn-sm btn-warning mx-1"
+                                                onClick={() => handleRoleChange(user._id, 'normal')}
+                                            >
+                                                Make Normal
                                             </button>
                                             {/* Delete Button */}
                                             <button
-                                                className="btn btn-sm btn-danger mx-1"
+                                                className="btn btn-sm btn-error mx-1"
                                                 onClick={() => handleDeleteUser(user._id)}
                                             >
                                                 Delete

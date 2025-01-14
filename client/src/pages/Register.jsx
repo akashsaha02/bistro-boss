@@ -47,6 +47,7 @@ const Register = () => {
       const userInfo = {
         name: name,
         email: email,
+        role: 'normal', // Default role assigned during registration
       };
 
       const response = await axiosPublic.post('/users', userInfo);
@@ -65,6 +66,7 @@ const Register = () => {
         e.target.reset();
         navigate('/');
       }
+
     } catch (error) {
       console.error('Error registering user:', error.message);
       Swal.fire({

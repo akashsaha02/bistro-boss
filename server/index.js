@@ -35,20 +35,45 @@ async function run() {
     app.post('/users', async (req, res) => {
       const user = req.body;
 
-
       const query = { email: user.email };
       const existingUser = await userCollection.findOne(query);
+
       if (existingUser) {
-        res.send({ message: 'User already exists', insertedId: existingUser._id }); 
+        res.send({ message: 'User already exists', insertedId: existingUser._id });
         return;
       }
+
+      // Set default role to "normal" if not provided
+      user.role = user.role || 'normal';
+
       const result = await userCollection.insertOne(user);
       res.json(result);
     });
 
+
     app.get('/users', async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
+    });
+
+    // Update User Role
+    app.patch('/users/role/:id', async (req, res) => {
+      const id = req.params.id;
+      const { role } = req.body; // Expecting role: 'admin', 'premium', or 'normal'
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: { role },
+      };
+      const result = await userCollection.updateOne(filter, updateDoc);
+      res.json(result);
+    });
+
+
+    app.delete('/users/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      res.json(result);
     });
 
 

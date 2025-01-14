@@ -23,7 +23,7 @@ const Sidebar = () => {
                     to="/dashboard/admin-home"
                     className={({ isActive }) =>
                         isActive
-                            ? "font-bold !text-yolo"
+                            ? "font-bold text-white bg-yolo"
                             : "text-black hover:!text-yolo font-medium"
                     }
                 >
@@ -39,7 +39,7 @@ const Sidebar = () => {
                     to="/dashboard/add-items"
                     className={({ isActive }) =>
                         isActive
-                            ? "font-bold !text-yolo"
+                            ? "font-bold text-white bg-yolo"
                             : "text-black hover:!text-yolo font-medium"
                     }
                 >
@@ -55,7 +55,7 @@ const Sidebar = () => {
                     to="/dashboard/admin-home"
                     className={({ isActive }) =>
                         isActive
-                            ? "font-bold !text-yolo"
+                            ? "font-bold text-white bg-yolo"
                             : "text-black hover:!text-yolo font-medium"
                     }
                 >
@@ -71,7 +71,7 @@ const Sidebar = () => {
                     to="/dashboard/admin-home"
                     className={({ isActive }) =>
                         isActive
-                            ? "font-bold !text-yolo"
+                            ? "font-bold text-white bg-yolo"
                             : "text-black hover:!text-yolo font-medium"
                     }
                 >
@@ -87,7 +87,7 @@ const Sidebar = () => {
                     to="/dashboard/users"
                     className={({ isActive }) =>
                         isActive
-                            ? "font-bold !text-yolo"
+                            ? "font-bold text-white bg-yolo"
                             : "text-black hover:!text-yolo font-medium"
                     }
                 >
@@ -110,7 +110,7 @@ const Sidebar = () => {
                         to="/dashboard/user-home"
                         className={({ isActive }) =>
                             isActive
-                                ? "font-bold !text-yolo"
+                                ? "font-bold text-white bg-yolo"
                                 : "text-black hover:!text-yolo font-medium"
                         }
                     >
@@ -126,7 +126,7 @@ const Sidebar = () => {
                         to="/dashboard/reservation"
                         className={({ isActive }) =>
                             isActive
-                                ? "font-bold !text-yolo"
+                                ? "font-bold text-white bg-yolo"
                                 : "text-black hover:!text-yolo font-medium"
                         }
                     >
@@ -142,7 +142,7 @@ const Sidebar = () => {
                         to="/dashboard/payment-history"
                         className={({ isActive }) =>
                             isActive
-                                ? "font-bold !text-yolo"
+                                ? "font-bold text-white bg-yolo"
                                 : "text-black hover:!text-yolo font-medium"
                         }
                     >
@@ -158,7 +158,7 @@ const Sidebar = () => {
                         to="/dashboard/cart"
                         className={({ isActive }) =>
                             isActive
-                                ? "font-bold !text-yolo"
+                                ? "font-bold text-white bg-yolo"
                                 : "text-black hover:!text-yolo font-medium"
                         }
                     >
@@ -176,7 +176,7 @@ const Sidebar = () => {
                         to="/dashboard/add-review"
                         className={({ isActive }) =>
                             isActive
-                                ? "font-bold !text-yolo"
+                                ? "font-bold text-white bg-yolo"
                                 : "text-black hover:!text-yolo font-medium"
                         }
                     >
@@ -192,7 +192,7 @@ const Sidebar = () => {
                         to="/dashboard/my-bookings"
                         className={({ isActive }) =>
                             isActive
-                                ? "font-bold !text-yolo"
+                                ? "font-bold text-white bg-yolo"
                                 : "text-black hover:!text-yolo font-medium"
                         }
                     >
@@ -215,7 +215,7 @@ const Sidebar = () => {
                 to="/"
                 className={({ isActive }) =>
                     isActive
-                        ? "font-bold !text-yolo"
+                        ? "font-bold text-white bg-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
@@ -231,7 +231,7 @@ const Sidebar = () => {
                 to="/menu"
                 className={({ isActive }) =>
                     isActive
-                        ? "font-bold !text-yolo"
+                        ? "font-bold text-white bg-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
@@ -247,7 +247,7 @@ const Sidebar = () => {
                 to="/order"
                 className={({ isActive }) =>
                     isActive
-                        ? "font-bold !text-yolo"
+                        ? "font-bold text-white bg-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
@@ -263,7 +263,7 @@ const Sidebar = () => {
                 to="/dashboard/my-bookings"
                 className={({ isActive }) =>
                     isActive
-                        ? "font-bold !text-yolo"
+                        ? "font-bold text-white bg-yolo"
                         : "text-black hover:!text-yolo font-medium"
                 }
             >
