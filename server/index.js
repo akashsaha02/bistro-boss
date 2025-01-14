@@ -42,7 +42,7 @@ async function run() {
 
     // middlewares
     const verifyToken = (req, res, next) => {
-      console.log(req.headers.authorization)
+      // console.log(req.headers.authorization)
       if (!req.headers.authorization) {
         return res.status(401).send({ message: 'Unauthorized request' });
       }
@@ -55,16 +55,24 @@ async function run() {
         req.decoded = decoded;
         next();
       });
+    }
 
-      // next();
-
+    const verifyAdmin = (req, res, next) => {
+      const email = req.decoded.email;
+      const query = { email: email };
+      const user = userCollection.findOne(query);
+      const isAdmin = user.role === 'admin';
+      if (!isAdmin) {
+        return res.status(403).send({ message: 'Forbidden request' });
+      }
+      next();
     }
 
 
 
     // User Collection
 
-    app.get('/users', verifyToken, async (req, res) => {
+    app.get('/users', verifyToken, verifyAdmin, async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
     });
@@ -80,7 +88,7 @@ async function run() {
       if (user.role === 'admin') {
         isAdmin = true;
       }
-      res.send(admin);
+      res.send(isAdmin);
     });
 
 
@@ -104,7 +112,7 @@ async function run() {
 
 
     // Update User Role
-    app.patch('/users/role/:id', async (req, res) => {
+    app.patch('/users/role/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const { role } = req.body; // Expecting role: 'admin', 'premium', or 'normal'
       const filter = { _id: new ObjectId(id) };
@@ -116,7 +124,7 @@ async function run() {
     });
 
 
-    app.delete('/users/:id', async (req, res) => {
+    app.delete('/users/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await userCollection.deleteOne(query);
@@ -139,20 +147,20 @@ async function run() {
 
 
     // Carts Collection
-    app.get('/carts', async (req, res) => {
+    app.get('/carts', verifyToken, async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       const result = await cartsCollection.find(query).toArray();
       res.send(result);
     });
 
-    app.post('/carts', async (req, res) => {
+    app.post('/carts', verifyToken, async (req, res) => {
       const cart = req.body;
       const result = await cartsCollection.insertOne(cart);
       res.json(result);
     });
 
-    app.delete('/carts/:id', async (req, res) => {
+    app.delete('/carts/:id', verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await cartsCollection.deleteOne(query);

@@ -8,12 +8,14 @@ import { GiForkKnifeSpoon } from "react-icons/gi";
 import { BiSolidFoodMenu } from "react-icons/bi";
 import { IoMail } from "react-icons/io5";
 import logo from '../../assets/logo.png'
+import useAdmin from "../../hooks/useAdmin";
 
 const Sidebar = () => {
 
     const [cart] = useCart();
 
-    const isAdmin = true;
+    const isAdmin =useAdmin();
+    console.log(isAdmin);
 
     const sidebarItems =
         isAdmin ? <>
