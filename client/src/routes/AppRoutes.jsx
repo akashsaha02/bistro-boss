@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import Profile from "../pages/Profile";
 import Dashboard from './../Layout/Dashboard';
 import Cart from "../pages/dashboard/Cart";
+import Contact from "../pages/Contact";
 
 export const router = createBrowserRouter([
     {
@@ -21,45 +22,57 @@ export const router = createBrowserRouter([
                 element: <Home />
             },
             {
+                path:"/contact",
+                element:<Contact/>
+            },
+            {
                 path: "/menu",
-                element: <Menu/>
+                element: <Menu />
             },
             {
                 path: "/order",
-                element:<Order/>
+                element: <Order />
             },
+
             {
                 path: "/order/:category",
-                element:<Order/>
+                element: <Order />
             },
             {
-                path:"/profile",
-                element:<PrivateRoute>
-                    <Profile/>
+                path: "/profile",
+                element: <PrivateRoute>
+                    <Profile />
                 </PrivateRoute>
 
             }
         ]
     },
     {
-        path:'/login',
-        element:<Login/>,
-        errorElement:<div>Not Found</div>
+        path: '/login',
+        element: <Login />,
+        errorElement: <div>Not Found</div>
     },
     {
-        path:'/register',
-        element:<Register/>,
-        errorElement:<div>Not Found</div>
+        path: '/register',
+        element: <Register />,
+        errorElement: <div>Not Found</div>
     },
     {
-        path:'/dashboard',
-        element:<Dashboard/>,
-        errorElement:<div>Not Found</div>,
-        children:[
+        path: '/dashboard',
+        element: <Dashboard />,
+        errorElement: <div>Not Found</div>,
+        children: [
             {
-                path:'/dashboard/cart',
-                element:<Cart/>
-                
+                path: '/dashboard/user-home',
+                element: <div>User Home</div>
+
+            },
+            {
+                path: '/dashboard/cart',
+                element: <PrivateRoute>
+                    <Cart />
+                </PrivateRoute>
+
             }
         ]
 
