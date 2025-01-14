@@ -10,6 +10,7 @@ import Profile from "../pages/Profile";
 import Dashboard from './../Layout/Dashboard';
 import Cart from "../pages/dashboard/Cart";
 import Contact from "../pages/Contact";
+import AllUsers from "../pages/dashboard/AllUsers";
 
 export const router = createBrowserRouter([
     {
@@ -22,8 +23,8 @@ export const router = createBrowserRouter([
                 element: <Home />
             },
             {
-                path:"/contact",
-                element:<Contact/>
+                path: "/contact",
+                element: <Contact />
             },
             {
                 path: "/menu",
@@ -73,6 +74,14 @@ export const router = createBrowserRouter([
                     <Cart />
                 </PrivateRoute>
 
+            }
+
+            // admin routes
+            , {
+                path: '/dashboard/users',
+                element: <PrivateRoute>
+                    <AllUsers />
+                </PrivateRoute>
             }
         ]
 

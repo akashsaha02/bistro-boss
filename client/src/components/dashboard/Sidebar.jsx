@@ -84,7 +84,7 @@ const Sidebar = () => {
             </li>
             <li>
                 <NavLink
-                    to="/dashboard/admin-home"
+                    to="/dashboard/users"
                     className={({ isActive }) =>
                         isActive
                             ? "font-bold !text-yolo"
