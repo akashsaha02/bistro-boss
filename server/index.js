@@ -42,17 +42,17 @@ async function run() {
 
     // middlewares
     const verifyToken = (req, res, next) => {
-      console.log(req.headers)
+      console.log(req.headers.authorization)
       if (!req.headers.authorization) {
         return res.status(401).send({ message: 'Unauthorized request' });
       }
 
       const token = req.headers.authorization.split(' ')[1];
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {
           return res.status(403).send({ message: 'Forbidden request' });
         }
-        req.user = user;
+        req.decoded = decoded;
         next();
       });
 
@@ -64,8 +64,7 @@ async function run() {
 
     // User Collection
 
-    app.get('/users', async (req, res) => {
-      console.log(req.headers)
+    app.get('/users', verifyToken, async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
     });
