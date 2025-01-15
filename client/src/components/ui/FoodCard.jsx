@@ -40,8 +40,6 @@ const FoodCard = ({ food }) => {
         });
       });
 
-
-
     } else {
       Swal.fire({
         icon: 'warning',
@@ -57,9 +55,6 @@ const FoodCard = ({ food }) => {
       });
     }
   };
-
-
-
 
   return (
     <div className=" w-full bg-white rounded-lg shadow-md overflow-hidden">
