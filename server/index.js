@@ -138,6 +138,12 @@ async function run() {
       res.send(menu);
     });
 
+    app.post('/menu', verifyToken, async (req, res) => {
+      const menuItem = req.body;
+      const result = await menuCollection.insertOne(menuItem);
+      res.json(result);
+    });
+
 
     // Review Collection
     app.get('/reviews', async (req, res) => {
