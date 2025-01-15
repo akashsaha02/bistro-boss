@@ -14,7 +14,7 @@ const TabsComponent = ({ uniqueCategories, activeTab, setActiveTab }) => {
             value={category}
             className="px-4 py-2 text-gray-700 hover:text-yellow-500 focus:text-yellow-500 data-[state=active]:border-b-2 data-[state=active]:border-yellow-500 data-[state=active]:text-yellow-500 transition font-semibold capitalize"
           >
-            {category}
+            {category === 'all' ? 'All' : category}
           </Tabs.Trigger>
         ))}
       </Tabs.List>

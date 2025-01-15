@@ -8,7 +8,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Loader from '../components/ui/Loader';
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 9;
 
 const Order = () => {
   const [menu, loading] = useMenu();
@@ -17,15 +17,18 @@ const Order = () => {
   const [activeTab, setActiveTab] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
-  // Filter out unique categories
-  const uniqueCategories = useMemo(() => [...new Set(menu.map((item) => item.category))], [menu]);
+  // Include "All" tab and filter unique categories
+  const uniqueCategories = useMemo(
+    () => ['all', ...new Set(menu.map((item) => item.category.toLowerCase()))],
+    [menu]
+  );
 
   // Set the initial active tab based on the route parameter
   useEffect(() => {
     if (routeCategory && uniqueCategories.includes(routeCategory)) {
       setActiveTab(routeCategory);
     } else if (uniqueCategories.length > 0) {
-      setActiveTab(uniqueCategories[0]); // Default to the first category
+      setActiveTab('all'); // Default to "All"
     }
   }, [routeCategory, uniqueCategories]);
 
@@ -60,7 +63,11 @@ const Order = () => {
           setActiveTab={handleTabChange} // Use the custom function
         />
         {uniqueCategories.map((category, index) => {
-          const filteredMenu = menu.filter((item) => item.category === category);
+          // Filter menu items based on the active tab
+          const filteredMenu =
+            category === 'all'
+              ? menu // All items
+              : menu.filter((item) => item.category.toLowerCase() === category.toLowerCase());
 
           return (
             <div key={index} className={activeTab === category ? '' : 'hidden'}>
