@@ -11,6 +11,8 @@ import Dashboard from './../Layout/Dashboard';
 import Cart from "../pages/dashboard/Cart";
 import Contact from "../pages/Contact";
 import AllUsers from "../pages/dashboard/AllUsers";
+import AdminRoute from "./AdminRoute";
+import AddItems from "../pages/dashboard/AddItems";
 
 export const router = createBrowserRouter([
     {
@@ -77,11 +79,44 @@ export const router = createBrowserRouter([
             }
 
             // admin routes
-            , {
+            ,
+            {
+                path: "/dashboard/admin-home",
+                element: <AdminRoute>
+                    <div>
+                        admin-home
+                    </div>
+                </AdminRoute>
+            },
+            {
                 path: '/dashboard/users',
-                element: <PrivateRoute>
+                element: <AdminRoute>
                     <AllUsers />
-                </PrivateRoute>
+                </AdminRoute>
+            },
+            {
+                path: '/dashboard/add-items',
+                element: <AdminRoute>
+                    <AddItems />
+                </AdminRoute>
+
+
+            },
+            {
+                path: '/dashboard/manage-items',
+                element: <AdminRoute>
+                    <div>
+                        manage items
+                    </div>
+                </AdminRoute>
+
+            }, {
+                path: '/dashboard/manage-bookings',
+                element: <AdminRoute>
+                    <div>
+                        manage Bookings
+                    </div>
+                </AdminRoute>
             }
         ]
 

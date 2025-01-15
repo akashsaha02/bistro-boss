@@ -3,11 +3,11 @@ import Sidebar from '../components/dashboard/Sidebar'
 
 const Dashboard = () => {
   return (
-    <div className='flex flex-col lg:flex-row gap-4'>
+    <div className='flex flex-col lg:flex-row'>
         <div className="">
             <Sidebar/>
         </div>
-        <div className="w-full">
+        <div className="w-full p-4">
             <Outlet/>
         </div>
       
