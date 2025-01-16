@@ -1,23 +1,19 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from './useAxiosSecure';
 
 const useMenu = () => {
-    const [menu, setMenu] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        axios.get(`${apiBaseUrl}/menu`)
-            .then((res) => {
-                setMenu(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [])
-    return [menu, loading];
-}
+    const axiosSecure = useAxiosSecure();
+    // Use React Query to fetch the menu
+    const { data: menu = [], isLoading, refetch } = useQuery({
+        queryKey: ['menu'], // Unique query key
+        queryFn: async () => {
+            const response = await axiosSecure.get('/menu');
+            return response.data;
+        },
+    });
 
-export default useMenu
+    return [menu, isLoading, refetch];
+};
+
+export default useMenu;

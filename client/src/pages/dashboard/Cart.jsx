@@ -3,11 +3,13 @@ import useCart from "../../hooks/useCart"
 import SectionTitle from './../../components/ui/SectiontTitle';
 import Swal from 'sweetalert2';
 import useAxiosSecure from './../../hooks/useAxiosSecure';
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
     const [cart, refetch] = useCart();
     const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const handleDeleteCart = (id) => {
         Swal.fire({
@@ -47,7 +49,7 @@ const Cart = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 cinzel text-dark-1 font-semibold items-center">
                 <h3 className="text-xl md:text-2xl">Total Order: {cart.length} </h3>
                 <h3 className="text-xl md:text-2xl">Total Price: {totalPrice}$ </h3>
-                <button type="" className="btn btn-md bg-yolo text-lg md:text-xl text-white">
+                <button onClick={() => { navigate("/dashboard/payment") }} disabled={!cart.length} type="" className="btn btn-md bg-yolo text-lg md:text-xl text-white">
                     Pay {totalPrice}$
                 </button>
             </div>
