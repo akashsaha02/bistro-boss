@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+
 const cors = require('cors');
 require('dotenv').config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
@@ -30,6 +32,7 @@ async function run() {
     const menuCollection = database.collection("menu");
     const reviewsCollection = database.collection("reviews");
     const cartsCollection = database.collection("carts");
+    const 
 
 
     // jwt api
@@ -67,8 +70,6 @@ async function run() {
       }
       next();
     }
-
-
 
     // User Collection
 
@@ -108,9 +109,6 @@ async function run() {
       res.json(result);
     });
 
-
-
-
     // Update User Role
     app.patch('/users/role/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
@@ -131,6 +129,34 @@ async function run() {
       res.json(result);
     });
 
+
+    // Payment Routes
+
+    app.post("/create-payment-intent", verifyToken, async (req, res) => {
+      const { price } = req.body;
+      // const amount = price * 100;
+      const amount = price * 100;
+
+      // Create a PaymentIntent with the order amount and currency
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: "usd",
+        // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
+    });
+
+
+
+
+
+    // Payment Routes end
 
     // Menu Collection
     app.get('/menu', async (req, res) => {

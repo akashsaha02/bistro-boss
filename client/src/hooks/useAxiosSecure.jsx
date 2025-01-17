@@ -14,7 +14,7 @@ const useAxiosSecure = () => {
     const navigate = useNavigate();
     // request interceptor to add autorization token to secure requests
     axiosSecure.interceptors.request.use((config) => {
-        console.log('interceptor secure');
+        // console.log('interceptor secure');
         const token = localStorage.getItem('access-token');
 
         if (token) {
