@@ -32,7 +32,7 @@ async function run() {
     const menuCollection = database.collection("menu");
     const reviewsCollection = database.collection("reviews");
     const cartsCollection = database.collection("carts");
-    const 
+    const paymentsCollection = database.collection("payments");
 
 
     // jwt api
@@ -134,12 +134,13 @@ async function run() {
 
     app.post("/create-payment-intent", verifyToken, async (req, res) => {
       const { price } = req.body;
+      console.log(price);
       // const amount = price * 100;
-      const amount = price * 100;
+      // const amount = price * 100;
 
       // Create a PaymentIntent with the order amount and currency
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: amount,
+        amount: price,
         currency: "usd",
         // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
         automatic_payment_methods: {
@@ -152,11 +153,54 @@ async function run() {
       });
     });
 
-
-
-
-
     // Payment Routes end
+
+    //Payment collection
+
+    app.post('/payments', verifyToken, async (req, res) => {
+      const payment = req.body;
+      const result = await paymentsCollection.insertOne(payment);
+
+      const query = {
+        _id: {
+          $in: payment.cartItemIds.map((id) => new ObjectId(id))
+        }
+      }
+      const deleteResult = await cartsCollection.deleteMany(query);
+      res.json({ result, deleteResult });
+    });
+
+    app.get('/payments/:email', verifyToken, async (req, res) => {
+
+      const query = { email: req.params.email }
+      if (req.params.email !== req.decoded.email) {
+        return res.status(403).send({ message: 'Forbidden request' });
+      }
+      const payments = await paymentsCollection.find(query).toArray();
+      res.send(payments);
+    });
+
+
+    app.get('/payments', verifyToken, verifyAdmin, async (req, res) => {
+      const payments = await paymentsCollection.find().toArray();
+      res.send(payments);
+    });
+
+    app.patch('/payments/:id', verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const payment = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: payment,
+      };
+      const result = await paymentsCollection.updateOne(query, updateDoc);
+      res.json(result);
+    });
+
+
+
+
+
 
     // Menu Collection
     app.get('/menu', async (req, res) => {
