@@ -136,8 +136,6 @@ async function run() {
       const { price } = req.body;
       console.log(price);
       // const amount = price * 100;
-      // const amount = price * 100;
-
       // Create a PaymentIntent with the order amount and currency
       const paymentIntent = await stripe.paymentIntents.create({
         amount: price,
@@ -286,6 +284,3 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-
-// poragsaha
-// poragsaha
