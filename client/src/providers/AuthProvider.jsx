@@ -5,7 +5,6 @@ import auth from '../firebase/firebase.init';
 import useAxiosPublic from './../hooks/useAxiosPublic';
 const googleProvider = new GoogleAuthProvider();
 
-
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -44,7 +43,6 @@ const AuthProvider = ({ children }) => {
         }
         return isAuthenticated;
     }
-
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
